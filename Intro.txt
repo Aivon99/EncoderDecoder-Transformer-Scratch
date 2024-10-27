@@ -1,1 +1,64 @@
 This is gonna be humbling and fun
+
+d_model = 512
+
+Encoder: 6 identical layers, 
+                    each with 2 sub layers:
+                        1)multi-head self attention mechanism
+                        2)simple, position-wise fully connected feed forward network
+
+                        Residual connection around each of the 2 subLayers
+                        Followed by layer normalization: Sub-Layer_output = LayerNorm(x + Sublayer(x)) ::: Sublayer() is the function employed 
+
+                        All sub-layers and embedding layers produce outputs of dim d_model 
+
+Encoder: 6 identical layers, 
+     
+                    each with 2 + 1 sub layers:
+                        1)MODIFIED multi-head self attention mechanism
+                            to prevent positions from attending to subsequent positions ( Masking )
+                                ----> Combined with output embeddings shifted by 1 position == ensures ith prediction only depends on known outputs (pos < i) 
+
+                        2)simple, position-wise fully connected feed forward network
+
+                        3)In addition: Multi-head attention on the Encoder output 
+
+                        Residual connection around each of the 2 subLayers
+                        Followed by layer normalization: Sub-Layer_output = LayerNorm(x + Sublayer(x)) ::: Sublayer() is the function employed 
+
+                        All sub-layers and embedding layers produce outputs of dim d_model 
+
+Scaled Dot product Attention:   
+                        Q, K: n x d_k 
+                        V: n x d_v
+                        Matrix of Outputs:
+                            Attention(Q, K, V) = softmax(QK^t/sqrt(d_k))V
+
+h-Multi-head Scaled dot product attention:
+                        Q,K,V get linearly projected h times (vie h different, learned projectors) 
+                        each projection  the attention function
+                        these are then concatenated and projected 
+i.e. MultiHead(Q, K, V) = Concat(head_1,....head_i, ....,head_h)W^O 
+        where head_i = Attention(Q W_i^Q, K W_i^K,V W_i^V)
+
+
+
+
+
+
+Task:
+Implement encoder-decoder Transformer architecture from scratch. Use pytorch
+Attention must be implemented from scratch not allowed: torch.nn.MultiheadAttention 
+                                                        torch.nn.functional.scaled_dot_product_attention 
+No need to train the model.
+
+Name the final class that encapsulates all transformer layers and performs autoregressive text generation Translator. 
+
+Make sure that forward pass runs successfully. 
+
+Input to the model is of shape (batch_size x max_input_length). 
+
+Output of the model is of shape (batch_size x max_output_length).
+
+
+ 
