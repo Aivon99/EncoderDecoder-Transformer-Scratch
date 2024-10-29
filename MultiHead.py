@@ -35,15 +35,11 @@ class MultiHead(tc.nn.Module):
     
 #TODO: test 
 def test_multihead_attention():
-    h = 8  # Number of heads
-    d_model = 64  # Model dimensionality
-    seq_length = 20  # Length of the sequence
-
-    # Initialize MultiHead attention
+    h = 8  
+    d_model = 64  
+    seq_length = 20  
     multi_head_attention = MultiHead(h, d_model)
-
-    # Create dummy input tensors
-    batch_size = 10  # Number of examples
+    batch_size = 10 
     Q = tc.rand(batch_size, seq_length, d_model)  #1600
     K = tc.rand(batch_size, seq_length, d_model)  
     V = tc.rand(batch_size, seq_length, d_model)  
@@ -60,4 +56,4 @@ def test_multihead_attention():
     except Exception as e:
         print(f"An error occurred: {e}")
 
-test_multihead_attention()
+#test_multihead_attention()
