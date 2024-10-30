@@ -35,7 +35,7 @@ encoder = Encoder(h=h, d_model=d_model, ffn_dim=ffn_dim)
 
 output = encoder(X)
 
-assert output.shape == X.shape, f"Output shape {output.shape} does not match input shape {X.shape}"
-assert not tc.isnan(output).any(), "Output contains NaN values"
-print("Encoder forward pass output shape:", output.shape)
-print("Encoder forward pass successful, output shape matches input shape.")
+assert output.shape == X.shape, f"put shape {output.shape} not match input shape {X.shape}"
+assert not tc.isnan(output).any(), "output contains NaN values"
+print("encoder forwar shape:", output.shape)
+print("encoder forward successful, output shape matches input shape...again surprised...")
