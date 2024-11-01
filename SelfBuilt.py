@@ -9,5 +9,5 @@ def ScaleDotProduct(Q, K, V, mask = "none"):
     if mask != None  :  
         QK = QK.masked_fill(mask == 0, float('-inf'))    
 
-    scores = tc.softmax(QK, dim=-1) # TODO: implement masking, padding and cheating
+    scores = tc.softmax(QK, dim=-1) # TODO: implement  padding and cheating
     return tc.matmul(scores, V)

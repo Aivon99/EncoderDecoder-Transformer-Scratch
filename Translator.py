@@ -1,3 +1,4 @@
+import torch as tc
 import Encoder 
 import Decoder 
 
@@ -16,7 +17,12 @@ class Translator():
 
 
     def forward(self, Inputs, Outputs):
-        encoder_output = self.encoder(Inputs)
-        decoder_output = self.decoder(Outputs, encoder_output)
         
-        return None #stud
+        encoder_output = self.encoder(Inputs)
+        product = self.decoder(Outputs, encoder_output)
+
+
+        #Linear
+        product = tc.softmax(product)        #TODO:: dimensions checks/coersing!!!!!
+
+        return product

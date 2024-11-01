@@ -40,4 +40,3 @@ def test_positional_encoding():
     denom_odd = tc.exp(tc.arange(0, d_model, 2).float() * (-math.log(10000.0) / d_model))
     expected_pe = tc.cos(pos * denom_odd)
     print("tests passed")
-
