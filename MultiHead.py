@@ -3,7 +3,7 @@ import SelfBuilt as sb
 
 class MultiHead(tc.nn.Module):
         
-    def __init__(self, h, d_model ): #projections d_k = d_v = d_model/h, in the paper's case 64 
+    def __init__(self, h, d_model ): #projections d_k = d_v = d_model/h, in the paper's case 64, expecting d_model%h -> 0 
         super().__init__()
         self.d_model = d_model
         self.h = h
@@ -15,7 +15,7 @@ class MultiHead(tc.nn.Module):
         self.W_V = tc.nn.Linear(self.d_model, self.d_model, bias = False) # d_model x d_v
     
         
-    def forward(self, V, K, Q, flag="none"):
+    def forward(self, V, K, Q, mask = None):
         batch_size, seq_length, _ = Q.size()  #
         
     #epected input: Q (batch_size, seq_length, d_model)
@@ -23,14 +23,15 @@ class MultiHead(tc.nn.Module):
         
         Q_p = self.W_Q(Q).view(batch_size, seq_length, self.h, self.d_k).transpose(1, 2)
         K_p = self.W_K(K).view(batch_size, seq_length, self.h, self.d_k).transpose(1, 2)
-        V_p = self.W_V(V).view(batch_size, seq_length, self.h, self.d_k).transpose(1, 2) #originally thought of doing a "single head" with mats dim D_model X d_v (as per paper) but ultimately found too unproactical
+        V_p = self.W_V(V).view(batch_size, seq_length, self.h, self.d_k).transpose(1, 2) #originally thought of doing a "single head" with mats dim D_model X d_v (as per paper) but ultimately found too unpractical
 
         print("got to K_p")
-        scaled_attention_output = sb.ScaleDotProduct(Q_p, K_p, V_p, flag)  # Should return a tensor of shape (batch_size, h, seq_length, d_k)
+        scaled_attention_output = sb.ScaleDotProduct(Q_p, K_p, V_p, mask)  # Should return a tensor of shape (batch_size, h, seq_length, d_k)
 
     
-        concat_attention = scaled_attention_output.transpose(1, 2).contiguous().view(batch_size, seq_length, self.d_k * self.h)
+        concat_attention = scaled_attention_output.transpose(1, 2).contiguous().view(batch_size, seq_length, self.d_k * self.h) #contigus?
         return self.W_O(concat_attention)
+
 
     
 #TODO: test 
