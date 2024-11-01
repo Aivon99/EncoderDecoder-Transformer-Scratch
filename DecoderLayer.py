@@ -13,7 +13,7 @@ class DecoderLayer(tc.nn.Module):
         self.W_k_masked = tc.nn.Linear(d_model, d_model)
         self.W_v_masked = tc.nn.Linear(d_model, d_model)
 
-        self.MaskedMultiHead = self.multiHead = mh.MultiHead( h, d_model)
+        self.MaskedMultiHead = mh.MultiHead( h, d_model)
         self.multiHead = mh.MultiHead( h, d_model)
         self.feedForward = FFN.FeedForward(d_model, ffn_dim)
 
@@ -25,7 +25,7 @@ class DecoderLayer(tc.nn.Module):
     def forward(self, X, encoder_output):
         Q = self.W_q_masked(X)
         K = self.W_k_masked(X)
-        V = self.W_k_masked(X) 
+        V = self.W_v_masked(X) 
         
         seq_len = X.size(1)
         LA_mask = tc.triu(tc.ones((seq_len, seq_len)), diagonal=1).bool().to(X.device)
