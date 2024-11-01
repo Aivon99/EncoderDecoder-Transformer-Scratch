@@ -1,8 +1,9 @@
 import torch as tc
 import MultiHead as mh
+import FeedForward as FFN 
 
 class DecoderLayer(tc.nn.Module):
-    def __init__(self):
+    def __init__(self, h, d_model, ffn_dim):
         super().__init__()
         self.h = h
         self.d = d_model
@@ -28,7 +29,7 @@ class DecoderLayer(tc.nn.Module):
         
         seq_len = X.size(1)
         LA_mask = tc.triu(tc.ones((seq_len, seq_len)), diagonal=1).bool().to(X.device)
-        
+
         X_1 = self.MaskedMultiHead(V, K, Q, LA_mask) #(self, V, K, Q, flag="none")
         X_1 = self.norm2(X_1 + X)
 
