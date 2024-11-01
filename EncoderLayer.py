@@ -51,7 +51,7 @@ def test_encoder_layer():
     ffn_dim = 256  
     seq_length = 20 
     batch_size = 10 
-
+    
     encoder_layer = EncoderLayer(h, d_model, ffn_dim)
     X = tc.rand(batch_size, seq_length, d_model)
     expected_output_shape = (batch_size, seq_length, d_model)
@@ -60,7 +60,7 @@ def test_encoder_layer():
         output = encoder_layer(X)
 
         assert output.shape == expected_output_shape, (
-            f"Output shape {output.shape} does not match expected {expected_output_shape}"
+            f"shape {output.shape} does not match expected {expected_output_shape}"
         )
 
         print("Test passed: utput shape correct and no errors...I'm surprised as well ")
@@ -68,5 +68,4 @@ def test_encoder_layer():
     except Exception as e:
         print(f"An error occurred: {e}")
 
-# Run the test
-test_encoder_layer()
+#test_encoder_layer()

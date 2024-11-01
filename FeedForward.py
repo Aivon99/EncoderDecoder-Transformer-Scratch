@@ -10,6 +10,9 @@ class FeedForward(tc.nn.Module):
         self.W1 = tc.nn.Linear(d_model, d_2 ,bias = True)
         self.W2 = tc.nn.Linear(d_2 ,d_model, bias = True)
         self.relu = tc.nn.ReLU()
+    
+    
+    
     def forward(self, X):
         #expected input dim (batch_size, seq_length, d_model)
         X_t1 = self.relu(self.W1(X))   #(batch_size, seq_length, d_2)
@@ -33,7 +36,6 @@ def test_feedforward():
 
     print(" dimensions are as expected.")
 
-test_feedforward()
 
 # fully connected feed-forward network, which is applied to each position separately and identically.
 # consists of two linear transformations with a ReLU activation in between.
