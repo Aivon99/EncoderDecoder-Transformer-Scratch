@@ -31,7 +31,7 @@ class DecoderLayer(tc.nn.Module):
         LA_mask = tc.triu(tc.ones((seq_len, seq_len)), diagonal=1).bool().to(X.device)
 
         X_1 = self.MaskedMultiHead(V, K, Q, LA_mask) #(self, V, K, Q, flag="none")
-        X_1 = self.norm2(X_1 + X)
+        X_1 = self.norm1(X_1 + X)
 
         X_2 = self.multiHead(encoder_output, encoder_output, X_1)
         X_2 = self.norm2(X_2 + X_1)
@@ -39,3 +39,5 @@ class DecoderLayer(tc.nn.Module):
         X_3 = self.feedForward(X_2)
         X_3 = self.norm3(X_3 + X_2)
         return X_3
+    
+    

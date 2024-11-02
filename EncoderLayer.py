@@ -69,3 +69,15 @@ def test_encoder_layer():
         print(f"An error occurred: {e}")
 
 #test_encoder_layer()
+
+def test_encoder_layer2():
+    batch_size, seq_length, d_model = 10, 20, 64
+    h, ffn_dim = 8, 256
+
+    encoder_layer = EncoderLayer(h, d_model, ffn_dim)
+    input_tensor = tc.rand(batch_size, seq_length, d_model)
+    output = encoder_layer(input_tensor)
+    print("Encoder Layer Output Shape:", output.shape)
+    assert output.shape == (batch_size, seq_length, d_model), \
+        f"Expected {(batch_size, seq_length, d_model)}, got {output.shape}"
+test_encoder_layer2()

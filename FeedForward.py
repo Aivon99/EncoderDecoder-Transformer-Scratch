@@ -47,3 +47,18 @@ def test_feedforward():
 # The dimensionality of input and output is dmodel = 512, and the inner-layer has dimensionality
 # df f = 2048.
 
+
+
+def test_feedforward():
+    d_model = 64 
+    d_2 = 256  
+    seq_length = 10  
+    batch_size = 5  
+    ff = FeedForward(d_model, d_2)
+    X = tc.rand(batch_size, seq_length, d_model)
+    output = ff(X)
+    assert output.shape == (batch_size, seq_length, d_model), f"Output shape {output.shape} does not match expected shape"
+    assert not tc.isnan(output).any(), "Output contains NaN values"
+    print("FeedForward test passed")
+
+#test_feedforward()

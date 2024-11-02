@@ -19,18 +19,22 @@ class MultiHead(tc.nn.Module):
         batch_size, seq_length, _ = Q.size()  #
         
     #epected input: Q (batch_size, seq_length, d_model)
-        print("got before K_p")
+        
         
         Q_p = self.W_Q(Q).view(batch_size, seq_length, self.h, self.d_k).transpose(1, 2)
         K_p = self.W_K(K).view(batch_size, seq_length, self.h, self.d_k).transpose(1, 2)
         V_p = self.W_V(V).view(batch_size, seq_length, self.h, self.d_k).transpose(1, 2) #originally thought of doing a "single head" with mats dim D_model X d_v (as per paper) but ultimately found too unpractical
 
-        print("got to K_p")
+      
         scaled_attention_output = sb.ScaleDotProduct(Q_p, K_p, V_p, mask)  # Should return a tensor of shape (batch_size, h, seq_length, d_k)
 
-    
+         
         concat_attention = scaled_attention_output.transpose(1, 2).contiguous().view(batch_size, seq_length, self.d_k * self.h) #contigus?
-        return self.W_O(concat_attention)
+        output = self.W_O(concat_attention)
+        if tc.isnan(output).any():
+            print("NaNs found in multiheadOutput")
+
+        return output
 
 
     
