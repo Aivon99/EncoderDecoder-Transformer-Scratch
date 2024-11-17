@@ -3,14 +3,14 @@ import Encoder
 import Decoder
 
 class Translator(tc.nn.Module):
-    def __init__(self, h, d_model, ffn_dim, vocab_size):
+    def __init__(self,n_encoders, n_decoders, h, d_model, ffn_dim, vocab_size):
         super().__init__()
         self.h = h
         self.d_model = d_model
         self.ffn_dim = ffn_dim
         self.vocab_size = vocab_size
-        self.encoder = Encoder.Encoder(h, d_model, ffn_dim, vocab_size)
-        self.decoder = Decoder.Decoder(h, d_model, ffn_dim, vocab_size)
+        self.encoder = Encoder.Encoder(h,n_encoders , d_model, ffn_dim, vocab_size)
+        self.decoder = Decoder.Decoder(h,n_decoders , d_model, ffn_dim, vocab_size)
         
         self.final_projection = tc.nn.Linear(d_model, vocab_size)
 
